@@ -8,7 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import (
     ListModelMixin,
     CreateModelMixin,
-    RetrieveModelMixin
+    RetrieveModelMixin,
+    UpdateModelMixin
 )
 
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
@@ -108,7 +109,13 @@ class MovieViewSet(
         return MovieSerializer
 
 
-class MovieSessionViewSet(viewsets.ModelViewSet):
+class MovieSessionViewSet(
+    ListModelMixin,
+    RetrieveModelMixin,
+    CreateModelMixin,
+    UpdateModelMixin,
+    viewsets.GenericViewSet
+):
     queryset = (
         MovieSession.objects.all()
         .select_related("movie", "cinema_hall")
